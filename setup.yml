@@ -1,0 +1,22 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: helloworld-tf
+spec:
+  interval: 1m
+  url: https://github.com/tgolden-es/thrv-demo
+  ref:
+    branch: main
+---
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: helloworld-tf
+spec:
+  path: ./
+  approvePlan: ""
+  interval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: helloworld-tf
