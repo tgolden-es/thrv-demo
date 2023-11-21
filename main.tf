@@ -38,7 +38,6 @@ variable "services" {
      alerts_enabled = bool
      email_alerts_to = list(string)
    ))
-   description = "Subject to hello"
 }
 
 resource "elasticstack_kibana_alerting_rule" "latency-default-rule" {
