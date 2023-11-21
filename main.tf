@@ -34,6 +34,7 @@ locals {
 
 variable "services" {
    type = list(object({
+     id = string
      latency_threshold = number
      alerts_enabled = bool
      email_alerts_to = list(string)
@@ -42,7 +43,7 @@ variable "services" {
 
 resource "elasticstack_kibana_alerting_rule" "latency-default-rule" {
   for_each = var.services
-  name = "Latency threshold | ${each.key}"
+  name = "Latency threshold | ${each.value.id}"
   consumer = "apm"
   notify_when = "onActionGroupChange"
   rule_type_id = "apm.transaction_duration"
@@ -51,13 +52,13 @@ resource "elasticstack_kibana_alerting_rule" "latency-default-rule" {
   params = jsonencode({
     aggregationType = "99th"
     environment     = "ENVIRONMENT_ALL"
-    serviceName     = each.key
+    serviceName     = each.value.id
     threshold       = each.value.latency_threshold
     transactionType = "request"
     windowSize      = 5
     windowUnit      = "m"
   })
-  tags = ["apm", "service.name:${each.key}"]
+  tags = ["apm", "service.name:${each.value.id}"]
   actions {
     group = "threshold_met"
     id     = "elastic-cloud-email"
