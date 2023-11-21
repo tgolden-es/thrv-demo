@@ -32,8 +32,17 @@ locals {
   }
 }
 
+variable "services" {
+   type = list(object({
+     latency_threshold = number
+     alerts_enabled = bool
+     email_alerts_to = list(string)
+   ))
+   description = "Subject to hello"
+}
+
 resource "elasticstack_kibana_alerting_rule" "latency-default-rule" {
-  for_each = local.services
+  for_each = var.services
   name = "Latency threshold | ${each.key}"
   consumer = "apm"
   notify_when = "onActionGroupChange"
