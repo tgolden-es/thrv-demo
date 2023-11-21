@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
-  name: hello-terraform
+  name: default
 spec:
   interval: 1m
   url: https://github.com/tgolden-es/thrv-demo
@@ -12,7 +12,7 @@ spec:
 apiVersion: infra.contrib.fluxcd.io/v1alpha2
 kind: Terraform
 metadata:
-  name: hello-terraform
+  name: default
 spec:
   path: ./
   approvePlan: ""
